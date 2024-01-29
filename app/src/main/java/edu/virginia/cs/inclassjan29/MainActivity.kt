@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -48,7 +49,8 @@ class MainActivity : ComponentActivity() {
                     MessageCard(Message(
                         "Author name",
                         Uri.parse("android.resource://"+R.drawable.profile_picture),
-                        "message text"))
+                        "message text"),
+                        modifier = Modifier)
                 }
             }
         }
@@ -68,34 +70,37 @@ class MainActivity : ComponentActivity() {
  */
 @Composable
 fun MessageCard(message: Message, modifier: Modifier = Modifier) {
-    Row() {
-        Image(
-            painter = painterResource(R.drawable.profile_picture),
-            contentDescription = "Profile picture",
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
-        )
+    Surface {
+        Row {
+            Image(
+                painter = painterResource(R.drawable.profile_picture),
+                contentDescription = "Profile picture",
+                modifier = modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
+            )
 
-        Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
-        Column() {
-            Text(
-                text = message.author,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.titleSmall)
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp
-            ) {
+            Column() {
                 Text(
-                    text = message.text,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(all = 4.dp)
+                    text = message.author,
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.titleSmall
                 )
+                Spacer(modifier = modifier.height(4.dp))
+
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    shadowElevation = 1.dp
+                ) {
+                    Text(
+                        text = message.text,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = modifier.padding(all = 4.dp)
+                    )
+                }
             }
         }
     }
